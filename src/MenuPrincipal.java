@@ -26,7 +26,7 @@ public class MenuPrincipal {
         btnJugar.setFont(new Font("Arial", Font.BOLD, 20));
         btnJugar.setMargin(new Insets(10, 10, 10, 10));
         btnJugar.setFocusable(false);
-        btnJugar.addActionListener(e -> iniciarElFarkle());
+        btnJugar.addActionListener(e -> iniciarJuego());
         btnJugar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Botón Salir
@@ -52,24 +52,39 @@ public class MenuPrincipal {
         frame.setVisible(true);
     }
 
-    private void iniciarElFarkle() {
-        String input = JOptionPane.showInputDialog(
+    private void iniciarJuego() {
+        String inputJugadores = JOptionPane.showInputDialog(
                 frame,
                 "¿Cuántos jugadores van a jugar?:",
                 "Número de Jugadores",
                 JOptionPane.QUESTION_MESSAGE
         );
 
-        if (input == null) {
+        if (inputJugadores == null) {
             return;
         }
 
         try {
-            int jugadores = Integer.parseInt(input);
+            int jugadores = Integer.parseInt(inputJugadores);
             if (jugadores < 2) {
                 throw new IllegalArgumentException("Debe haber al menos 2 jugadores.");
             }
-            new Farkle(jugadores);
+
+            String inputPuntos = JOptionPane.showInputDialog(
+                    frame,
+                    "Puntos requeridos para ganar:",
+                    "Configuración del Juego",
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (inputPuntos == null) {
+                return;
+            }
+
+            int puntosVictoria = Integer.parseInt(inputPuntos);
+
+
+            new Farkle(jugadores, puntosVictoria);
             frame.dispose();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(
