@@ -257,7 +257,7 @@ public class Farkle {
             idJugadorMeta = turnoJugador;
             restantesRondaExtra = totalJugadores - 1;
             JOptionPane.showMessageDialog(marcoPrincipal, "¡Jugador " +
-                    (turnoJugador + 1) + " lleg[o al puntaje limite!\nLos demás jugadores tendrán un turno adicional.");
+                    (turnoJugador + 1) + " llegó al puntaje limite!\nLos demás jugadores tendrán un turno adicional.");
         }
         siguienteJugador();
     }
