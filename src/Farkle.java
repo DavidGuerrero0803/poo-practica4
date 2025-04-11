@@ -140,3 +140,85 @@ public class Farkle {
         btnAnotar.setEnabled(true);
         btnDetener.setEnabled(false);
     }
+
+    private void calcularPuntos() {
+        int[] frecuencia = new int[7];
+        int totalSeleccionados = 0;
+
+        for (int i = 0; i < botonesDado.length; i++) {
+            if (estadosDado[i] == ESTADO_SELECCIONADO) {
+                frecuencia[valoresDado[i] + 1]++;
+                totalSeleccionados++;
+            }
+        }
+
+        if (totalSeleccionados == 0) {
+            int opcion = JOptionPane.showConfirmDialog(marcoPrincipal,
+                    "¿Cancelar puntos actuales?", "Confirmar",
+                    JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                puntosRonda = 0;
+                siguienteJugador();
+            }
+            return;
+        }
+
+        int scoringDiceCount = 0;
+        for (int i = 1; i <= 6; i++) {
+            if (i == 1 || i == 5) {
+                scoringDiceCount += frecuencia[i];
+            } else {
+                if (frecuencia[i] >= 3) {
+                    scoringDiceCount += frecuencia[i];
+                }
+            }
+        }
+        if (scoringDiceCount != totalSeleccionados) {
+            JOptionPane.showMessageDialog(marcoPrincipal,
+                    "Selección inválida. Debes seleccionar:\n" +
+                            "- 1's o 5's individuales\n" +
+                            "- Tríos\n" +
+                            "- Triple par (3 pares)",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int pares = 0;
+        boolean esTriplePar = true;
+        for (int i = 1; i <= 6; i++) {
+            if (frecuencia[i] == 2) {
+                pares++;
+            } else if (frecuencia[i] != 0 && frecuencia[i] != 3) {
+                esTriplePar = false;
+            }
+        }
+        if (esTriplePar && pares == 3) {
+            puntosRonda += 750;
+            lblMensaje.setText("¡Tres pares! +750 puntos");
+            bloquearDados();
+            return;
+        }
+
+        int puntosCalculados = 0;
+
+        if (frecuencia[1] >= 3) puntosCalculados += (frecuencia[1] - 2) * 1000;
+        if (frecuencia[2] >= 3) puntosCalculados += (frecuencia[2] - 2) * 200;
+        if (frecuencia[3] >= 3) puntosCalculados += (frecuencia[3] - 2) * 300;
+        if (frecuencia[4] >= 3) puntosCalculados += (frecuencia[4] - 2) * 400;
+        if (frecuencia[5] >= 3) puntosCalculados += (frecuencia[5] - 2) * 500;
+        if (frecuencia[6] >= 3) puntosCalculados += (frecuencia[6] - 2) * 600;
+
+        if (frecuencia[1] < 3) puntosCalculados += frecuencia[1] * 100;
+        if (frecuencia[5] < 3) puntosCalculados += frecuencia[5] * 50;
+
+        if (puntosCalculados == 0) {
+            JOptionPane.showMessageDialog(marcoPrincipal,
+                    "La selección no contiene combinaciones válidas",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        puntosRonda += puntosCalculados;
+        lblMensaje.setText("+" + puntosCalculados + " puntos");
+        bloquearDados();
+    }
