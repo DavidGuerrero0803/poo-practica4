@@ -286,3 +286,61 @@ public class Farkle {
         actualizarInterfaz();
         reiniciarDados();
     }
+
+    private void mostrarResultadoFinal() {
+        int maximo = -1;
+        int ganador = -1;
+        StringBuilder resumen = new StringBuilder("FIN DEL JUEGO\n");
+
+        for (int i = 0; i < totalJugadores; i++) {
+            resumen.append("Jugador ").append(i + 1).append(": ").append(puntajesJugadores[i]).append(" puntos\n");
+            if (puntajesJugadores[i] > maximo) {
+                maximo = puntajesJugadores[i];
+                ganador = i;
+            }
+        }
+        resumen.append("\nGanó el jugador ").append(ganador + 1).append("!");
+
+        // Mostrar resultados
+        JOptionPane.showMessageDialog(marcoPrincipal, resumen.toString());
+
+        // Preguntar si desean jugar nuevamente
+        int opcion = JOptionPane.showConfirmDialog(
+                marcoPrincipal,
+                "¿Quieres jugar otra partida?",
+                "Fin del juego",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            reiniciarJuego();
+        } else {
+            marcoPrincipal.dispose();
+            new MenuPrincipal().mostrar(); // Volver al menú principal
+        }
+    }
+
+    private void reiniciarJuego() {
+        // Reiniciar variables del juego
+        puntosRonda = 0;
+        ronda = 1;
+        turnoJugador = 0;
+        rondaExtra = false;
+        idJugadorMeta = -1;
+        restantesRondaExtra = 0;
+
+        Arrays.fill(puntajesJugadores, 0);
+
+        for (int i = 0; i < 6; i++) {
+            estadosDado[i] = ESTADO_ACTIVO;
+            botonesDado[i].setBackground(Color.WHITE);
+            botonesDado[i].setEnabled(false);
+        }
+
+        btnLanzar.setEnabled(true);
+        btnAnotar.setEnabled(false);
+        btnDetener.setEnabled(false);
+
+        actualizarInterfaz();
+        lblMensaje.setText(" ");
+    }
