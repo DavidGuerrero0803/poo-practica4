@@ -261,3 +261,28 @@ public class Farkle {
         }
         siguienteJugador();
     }
+
+    private void alternarEstado(int indice) {
+        if (estadosDado[indice] == ESTADO_ACTIVO) {
+            botonesDado[indice].setBackground(new Color(200, 255, 200));
+            estadosDado[indice] = ESTADO_SELECCIONADO;
+        } else {
+            botonesDado[indice].setBackground(Color.WHITE);
+            estadosDado[indice] = ESTADO_ACTIVO;
+        }
+    }
+
+    private void siguienteJugador() {
+        puntosRonda = 0;
+        if (rondaExtra && turnoJugador != idJugadorMeta) {
+            restantesRondaExtra--;
+            if (restantesRondaExtra == 0) {
+                mostrarResultadoFinal();
+                return;
+            }
+        }
+        turnoJugador = (turnoJugador + 1) % totalJugadores;
+        ronda++;
+        actualizarInterfaz();
+        reiniciarDados();
+    }
