@@ -14,4 +14,5 @@ public class Main {
     }
 }
 
-FOR CHAFA
+for (int i = 1; i<=4; i++){
+
