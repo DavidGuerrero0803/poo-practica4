@@ -222,3 +222,42 @@ public class Farkle {
         lblMensaje.setText("+" + puntosCalculados + " puntos");
         bloquearDados();
     }
+
+    private void bloquearDados() {
+        for (int j = 0; j < botonesDado.length; j++) {
+            if (estadosDado[j] == ESTADO_SELECCIONADO) {
+                estadosDado[j] = ESTADO_BLOQUEADO;
+                botonesDado[j].setBackground(new Color(255, 200, 200));
+            }
+            botonesDado[j].setEnabled(false);
+        }
+
+        long bloqueoTotal = Arrays.stream(estadosDado)
+                .filter(e -> e == ESTADO_BLOQUEADO)
+                .count();
+
+        if (bloqueoTotal == 6) {
+            for (int j = 0; j < botonesDado.length; j++) {
+                estadosDado[j] = ESTADO_ACTIVO;
+                botonesDado[j].setBackground(Color.WHITE);
+            }
+            lblMensaje.setText(lblMensaje.getText() + " ¡Hot Dice!");
+        }
+
+        lblPuntosActuales.setText("Puntos en juego: " + puntosRonda);
+        btnLanzar.setEnabled(true);
+        btnAnotar.setEnabled(false);
+        btnDetener.setEnabled(true);
+    }
+
+    private void finalizarTurno() {
+        puntajesJugadores[turnoJugador] += puntosRonda;
+        if (puntajesJugadores[turnoJugador] >= puntosVictoria && !rondaExtra) {
+            rondaExtra = true;
+            idJugadorMeta = turnoJugador;
+            restantesRondaExtra = totalJugadores - 1;
+            JOptionPane.showMessageDialog(marcoPrincipal, "¡Jugador " +
+                    (turnoJugador + 1) + " alcanzó la meta!\nOtros jugadores tendrán un turno adicional.");
+        }
+        siguienteJugador();
+    }
