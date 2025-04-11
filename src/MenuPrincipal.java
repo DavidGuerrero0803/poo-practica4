@@ -11,7 +11,7 @@ public class MenuPrincipal {
         frame.setLayout(new BorderLayout());
 
         // Panel de fondo con imagen
-        JLabel backgroundLabel = new JLabel(new ImageIcon("C:\\Users\\david\\IdeaProjects\\PruebaCodeFinal\\src\\PortadaFarkle.png"));
+        JLabel backgroundLabel = new JLabel(new ImageIcon("/src/PortadaFarkle.png"));
         backgroundLabel.setLayout(new BorderLayout());
 
         // Panel para los botones
@@ -37,3 +37,68 @@ public class MenuPrincipal {
         btnSalir.setFocusable(false);
         btnSalir.addActionListener(e -> salir());
         btnSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Añadir componentes
+        panelBotones.add(btnJugar);
+        panelBotones.add(Box.createRigidArea(new Dimension(0, 22)));
+        panelBotones.add(btnSalir);
+
+        backgroundLabel.add(panelBotones, BorderLayout.CENTER);
+        frame.add(backgroundLabel, BorderLayout.CENTER);
+        frame.setLocationRelativeTo(null);
+    }
+
+    public void mostrar() {
+        frame.setVisible(true);
+    }
+
+    private void iniciarElFarkle() {
+        String input = JOptionPane.showInputDialog(
+                frame,
+                "¿Cuántos jugadores van a jugar?:",
+                "Número de Jugadores",
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (input == null) {
+            return;
+        }
+
+        try {
+            int jugadores = Integer.parseInt(input);
+            if (jugadores < 2) {
+                throw new IllegalArgumentException("Debe haber al menos 2 jugadores.");
+            }
+            new Farkle(jugadores);
+            frame.dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    frame,
+                    "Ingrese un número válido.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(
+                    frame,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void salir() {
+        int confirmacion = JOptionPane.showConfirmDialog(
+                frame,
+                "¿Quieres salir del juego?",
+                "Salir del juego",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+}
