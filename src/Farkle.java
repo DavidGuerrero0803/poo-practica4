@@ -88,7 +88,7 @@ public class Farkle {
         controlesPrincipales.add(btnInstrucciones);
 
         panelInformacion = new JPanel(new GridLayout(5, 1, 5, 5));
-        panelInformacion.setBorder(BorderFactory.createTitledBorder("InformaciÃ³n del Juego"));
+        panelInformacion.setBorder(BorderFactory.createTitledBorder("Información del Juego"));
         panelInformacion.add(lblTurno);
         panelInformacion.add(lblRonda);
         panelInformacion.add(lblPuntosActuales);
