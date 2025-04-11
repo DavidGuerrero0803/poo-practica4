@@ -136,6 +136,21 @@ public class Farkle {
                     botonesDado[i].setEnabled(true);
                 });
 
+        // Verificar Farkle después del lanzamiento
+        if (!hayJugadasDisponibles()) {
+            lblMensaje.setText("¡Farkle! No hay jugadas disponibles");
+            puntosRonda = 0;
+
+            // Usar Timer para dar tiempo a leer el mensaje antes de cambiar de jugador
+            Timer timer = new Timer(2000, e -> {
+                siguienteJugador();
+            });
+            timer.setRepeats(false);
+            timer.start();
+
+            return;
+        }
+
         btnLanzar.setEnabled(false);
         btnAnotar.setEnabled(true);
         btnDetener.setEnabled(false);
@@ -362,6 +377,45 @@ public class Farkle {
         btnAnotar.setEnabled(false);
         btnDetener.setEnabled(false);
     }
+
+    private boolean hayJugadasDisponibles() {
+        int[] frecuencia = new int[7]; // índice 0 no usado, 1-6 para valores de dados
+
+        // Contar frecuencia de cada valor en dados activos
+        for (int i = 0; i < 6; i++) {
+            if (estadosDado[i] == ESTADO_ACTIVO) {
+                frecuencia[valoresDado[i] + 1]++;
+            }
+        }
+
+        // Verificar combinaciones válidas
+        // 1. Hay unos o cincos individuales?
+        if (frecuencia[1] > 0 || frecuencia[5] > 0) {
+            return true;
+        }
+
+        // 2. Hay tríos o más?
+        for (int i = 1; i <= 6; i++) {
+            if (frecuencia[i] >= 3) {
+                return true;
+            }
+        }
+
+        // 3. Verificar triple par (debe haber exactamente 3 pares)
+        int pares = 0;
+        for (int i = 1; i <= 6; i++) {
+            if (frecuencia[i] == 2) {
+                pares++;
+            }
+        }
+        if (pares == 3) {
+            return true;
+        }
+
+        // Si no se encontraron combinaciones válidas
+        return false;
+    }
+
 
     private void mostrarInstrucciones() {
         JDialog dialog = new JDialog(marcoPrincipal, "Tabla de Puntuación", false);
