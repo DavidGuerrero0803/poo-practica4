@@ -344,3 +344,65 @@ public class Farkle {
         actualizarInterfaz();
         lblMensaje.setText(" ");
     }
+
+    private void actualizarInterfaz() {
+        lblTurno.setText("Jugador actual: " + (turnoJugador + 1));
+        lblRonda.setText("Ronda: " + ronda);
+        lblPuntosActuales.setText("Puntos en juego: " + puntosRonda);
+        lblPuntosTotales.setText("Puntos acumulados: " + puntajesJugadores[turnoJugador]);
+    }
+
+    private void reiniciarDados() {
+        for (int j = 0; j < botonesDado.length; j++) {
+            botonesDado[j].setEnabled(false);
+            estadosDado[j] = ESTADO_ACTIVO;
+            botonesDado[j].setBackground(Color.WHITE);
+        }
+        btnLanzar.setEnabled(true);
+        btnAnotar.setEnabled(false);
+        btnDetener.setEnabled(false);
+    }
+
+    private void mostrarInstrucciones() {
+        JDialog dialog = new JDialog(marcoPrincipal, "Tabla de Puntuación", false);
+        dialog.setLayout(new BorderLayout());
+
+        String[] columnas = {"Combinación", "Puntos"};
+        Object[][] datos = {
+                {"Triple 1", "1000 puntos"},
+                {"Triple 2", "200 puntos"},
+                {"Triple 3", "300 puntos"},
+                {"Triple 4", "400 puntos"},
+                {"Triple 5", "500 puntos"},
+                {"Triple 6", "600 puntos"},
+                {"Cada 1 adicional", "100 puntos"},
+                {"Cada 5 adicional", "50 puntos"},
+                {"Triple Par (3 pares)", "750 puntos"},
+                {"Cuatro iguales", "1000 puntos"},
+                {"Cinco iguales", "2000 puntos"},
+                {"Seis iguales", "3000 puntos"},
+                {"Seis 1's", "5000 puntos"}
+        };
+
+        JTable tabla = new JTable(datos, columnas);
+        tabla.setEnabled(false);
+        tabla.setRowHeight(25);
+        tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tabla.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.addActionListener(e -> dialog.dispose());
+
+        JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelInferior.add(btnCerrar);
+
+        dialog.add(new JScrollPane(tabla), BorderLayout.CENTER);
+        dialog.add(panelInferior, BorderLayout.SOUTH);
+
+        dialog.setSize(450, 350);
+        dialog.setLocationRelativeTo(marcoPrincipal);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
+    }
+
+}
