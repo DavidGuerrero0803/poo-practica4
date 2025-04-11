@@ -99,3 +99,44 @@ public class Farkle {
         panelJuego.add(areaDados, BorderLayout.CENTER);
         panelJuego.add(panelInformacion, BorderLayout.SOUTH);
     }
+
+    private void prepararJuego() {
+        iconosCaras[5] = new ImageIcon("src/DadoCara6.png");
+        iconosCaras[4] = new ImageIcon("src/DadoCara5.png");
+        iconosCaras[3] = new ImageIcon("src/DadoCara4.png");
+        iconosCaras[2] = new ImageIcon("src/DadoCara3.png");
+        iconosCaras[1] = new ImageIcon("src/DadoCara2.png");
+        iconosCaras[0] = new ImageIcon("src/DadoCara1.png");
+
+        for (int i = 0; i < 6; i++) {
+            botonesDado[i].setIcon(iconosCaras[i]);
+            estadosDado[i] = ESTADO_ACTIVO;
+            botonesDado[i].setBackground(Color.WHITE);
+            botonesDado[i].setEnabled(false);
+        }
+
+        btnLanzar.setEnabled(true);
+        btnAnotar.setEnabled(false);
+        btnDetener.setEnabled(false);
+
+        marcoPrincipal.setContentPane(panelJuego);
+        marcoPrincipal.revalidate();
+        marcoPrincipal.repaint();
+        actualizarInterfaz();
+    }
+
+    private void lanzarDados() {
+        lblMensaje.setText("");
+        IntStream.range(0, botonesDado.length)
+                .filter(i -> estadosDado[i] == ESTADO_ACTIVO)
+                .forEach(i -> {
+                    int resultado = (int) (Math.random() * 6);
+                    valoresDado[i] = resultado;
+                    botonesDado[i].setIcon(iconosCaras[resultado]);
+                    botonesDado[i].setEnabled(true);
+                });
+
+        btnLanzar.setEnabled(false);
+        btnAnotar.setEnabled(true);
+        btnDetener.setEnabled(false);
+    }
