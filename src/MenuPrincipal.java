@@ -11,7 +11,7 @@ public class MenuPrincipal {
         frame.setLayout(new BorderLayout());
 
         // Panel de fondo con imagen
-        JLabel backgroundLabel = new JLabel(new ImageIcon("/src/PortadaFarkle.png"));
+        JLabel backgroundLabel = new JLabel(new ImageIcon("src/PortadaFarkle.png"));
         backgroundLabel.setLayout(new BorderLayout());
 
         // Panel para los botones
